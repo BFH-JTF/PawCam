@@ -1,573 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PawCam – Your Dog. Always Close.</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawCam – Your Dog. Always Close.</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --cream:   #F7F3EE;
-    --warm:    #EDE5D8;
-    --brown:   #8B6F4E;
-    --deep:    #2C1F0F;
-    --accent:  #D4622A;
-    --leaf:    #4A7C59;
-    --light:   #FAFAF8;
-    --radius:  18px;
-  }
+        :root {
+            --cream:   #F7F3EE;
+            --warm:    #EDE5D8;
+            --brown:   #8B6F4E;
+            --deep:    #2C1F0F;
+            --accent:  #D4622A;
+            --leaf:    #4A7C59;
+            --light:   #FAFAF8;
+            --radius:  18px;
+        }
 
-  html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--deep);
-    overflow-x: hidden;
-  }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--deep);
+            overflow-x: hidden;
+        }
 
-  /* ── NAV ─────────────────────────────────────────────────────────── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.1rem 2.5rem;
-    background: rgba(247,243,238,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(139,111,78,.15);
-  }
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem; color: var(--deep);
-    display: flex; align-items: center; gap: .45rem;
-  }
-  .logo span { color: var(--accent); }
-  nav ul { list-style: none; display: flex; gap: 2rem; }
-  nav a { text-decoration: none; color: var(--brown); font-size: .9rem; font-weight: 500;
-    transition: color .2s; }
-  nav a:hover { color: var(--accent); }
-  .nav-cta {
-    background: var(--accent); color: #fff !important;
-    padding: .45rem 1.2rem; border-radius: 50px;
-    font-weight: 600 !important;
-    transition: background .2s, transform .2s !important;
-  }
-  .nav-cta:hover { background: var(--deep) !important; transform: scale(1.04); }
+        /* ── NAV ─────────────────────────────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.1rem 2.5rem;
+            background: rgba(247,243,238,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(139,111,78,.15);
+        }
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem; color: var(--deep);
+            display: flex; align-items: center; gap: .45rem;
+        }
+        .logo span { color: var(--accent); }
+        nav ul { list-style: none; display: flex; gap: 2rem; }
+        nav a { text-decoration: none; color: var(--brown); font-size: .9rem; font-weight: 500;
+            transition: color .2s; }
+        nav a:hover { color: var(--accent); }
+        .nav-cta {
+            background: var(--accent); color: #fff !important;
+            padding: .45rem 1.2rem; border-radius: 50px;
+            font-weight: 600 !important;
+            transition: background .2s, transform .2s !important;
+        }
+        .nav-cta:hover { background: var(--deep) !important; transform: scale(1.04); }
 
-  /* ── HERO ─────────────────────────────────────────────────────────── */
-  .hero {
-    min-height: 100vh;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 7rem 5vw 4rem;
-    overflow: hidden;
-  }
+        /* ── HERO ─────────────────────────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 7rem 5vw 4rem;
+            overflow: hidden;
+        }
 
-  /* ── SLIDESHOW BACKGROUND ─────────────────────────────────────────── */
-  .slideshow {
-    position: absolute; inset: 0; z-index: 0;
-  }
-  .slide {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    opacity: 0;
-    transition: opacity 1.6s ease-in-out;
-  }
-  .slide.active { opacity: 1; }
-  /* dark gradient so text stays readable */
-  .hero-overlay {
-    position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(
-      to right,
-      rgba(44,31,15,0.82) 0%,
-      rgba(44,31,15,0.55) 50%,
-      rgba(44,31,15,0.15) 100%
-    );
-  }
+        /* ── SLIDESHOW BACKGROUND ─────────────────────────────────────────── */
+        .slideshow {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .slide {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0;
+            transition: opacity 1.6s ease-in-out;
+        }
+        .slide.active { opacity: 1; }
+        /* dark gradient so text stays readable */
+        .hero-overlay {
+            position: absolute; inset: 0; z-index: 1;
+            background: linear-gradient(
+                    to right,
+                    rgba(44,31,15,0.82) 0%,
+                    rgba(44,31,15,0.55) 50%,
+                    rgba(44,31,15,0.15) 100%
+            );
+        }
 
-  /* slide dots */
-  .slide-dots {
-    position: absolute; bottom: 2rem; left: 5vw; z-index: 3;
-    display: flex; gap: .55rem;
-  }
-  .slide-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(255,255,255,.35);
-    border: none; cursor: pointer; padding: 0;
-    transition: background .3s, transform .3s;
-  }
-  .slide-dot.active {
-    background: var(--accent); transform: scale(1.3);
-  }
+        /* slide dots */
+        .slide-dots {
+            position: absolute; bottom: 2rem; left: 5vw; z-index: 3;
+            display: flex; gap: .55rem;
+        }
+        .slide-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,.35);
+            border: none; cursor: pointer; padding: 0;
+            transition: background .3s, transform .3s;
+        }
+        .slide-dot.active {
+            background: var(--accent); transform: scale(1.3);
+        }
 
-  .hero-text {
-    position: relative; z-index: 2;
-    animation: fadeUp .9s ease both;
-    max-width: 560px;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: .5rem;
-    background: rgba(237,229,216,0.18);
-    border: 1px solid rgba(237,229,216,.35);
-    color: var(--cream); padding: .35rem 1rem;
-    border-radius: 50px; font-size: .8rem; font-weight: 600;
-    letter-spacing: .04em; text-transform: uppercase;
-    margin-bottom: 1.4rem;
-    backdrop-filter: blur(6px);
-  }
-  .dot { width: 7px; height: 7px; background: #5CDD8B;
-    border-radius: 50%; animation: pulse 2s infinite; }
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.6rem, 5vw, 4.2rem);
-    line-height: 1.1; letter-spacing: -.02em;
-    margin-bottom: 1.4rem;
-    color: #fff;
-  }
-  h1 em { color: #E8A87C; font-style: italic; }
-  .hero p {
-    font-size: 1.12rem; color: rgba(247,243,238,.85);
-    line-height: 1.7; max-width: 480px; margin-bottom: 2.2rem;
-  }
-  .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    background: var(--accent); color: #fff;
-    padding: .85rem 2rem; border-radius: 50px;
-    font-weight: 600; font-size: 1rem; text-decoration: none;
-    transition: background .2s, transform .2s;
-    display: inline-block;
-  }
-  .btn-primary:hover { background: var(--deep); transform: translateY(-2px); }
-  .btn-outline {
-    border: 2px solid rgba(255,255,255,.6); color: #fff;
-    padding: .85rem 2rem; border-radius: 50px;
-    font-weight: 600; font-size: 1rem; text-decoration: none;
-    transition: all .2s; display: inline-block;
-  }
-  .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.1); transform: translateY(-2px); }
+        .hero-text {
+            position: relative; z-index: 2;
+            animation: fadeUp .9s ease both;
+            max-width: 560px;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: .5rem;
+            background: rgba(237,229,216,0.18);
+            border: 1px solid rgba(237,229,216,.35);
+            color: var(--cream); padding: .35rem 1rem;
+            border-radius: 50px; font-size: .8rem; font-weight: 600;
+            letter-spacing: .04em; text-transform: uppercase;
+            margin-bottom: 1.4rem;
+            backdrop-filter: blur(6px);
+        }
+        .dot { width: 7px; height: 7px; background: #5CDD8B;
+            border-radius: 50%; animation: pulse 2s infinite; }
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.6rem, 5vw, 4.2rem);
+            line-height: 1.1; letter-spacing: -.02em;
+            margin-bottom: 1.4rem;
+            color: #fff;
+        }
+        h1 em { color: #E8A87C; font-style: italic; }
+        .hero p {
+            font-size: 1.12rem; color: rgba(247,243,238,.85);
+            line-height: 1.7; max-width: 480px; margin-bottom: 2.2rem;
+        }
+        .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--accent); color: #fff;
+            padding: .85rem 2rem; border-radius: 50px;
+            font-weight: 600; font-size: 1rem; text-decoration: none;
+            transition: background .2s, transform .2s;
+            display: inline-block;
+        }
+        .btn-primary:hover { background: var(--deep); transform: translateY(-2px); }
+        .btn-outline {
+            border: 2px solid rgba(255,255,255,.6); color: #fff;
+            padding: .85rem 2rem; border-radius: 50px;
+            font-weight: 600; font-size: 1rem; text-decoration: none;
+            transition: all .2s; display: inline-block;
+        }
+        .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.1); transform: translateY(-2px); }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-8px); }
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: .5; transform: scale(1.3); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: .5; transform: scale(1.3); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-  /* ── VALUE PROPOSITION ────────────────────────────────────────────── */
-  .vp-section {
-    padding: 6rem 5vw;
-    background: var(--deep);
-    color: var(--cream);
-    position: relative; overflow: hidden;
-  }
-  .vp-section::before {
-    content: '';
-    position: absolute; top: -80px; left: 0; right: 0;
-    height: 80px; background: var(--cream);
-    clip-path: ellipse(55% 100% at 50% 0%);
-  }
-  .vp-section::after {
-    content: '';
-    position: absolute; bottom: -80px; left: 0; right: 0;
-    height: 80px; background: var(--warm);
-    clip-path: ellipse(55% 100% at 50% 100%);
-  }
-  .section-label {
-    font-size: .75rem; font-weight: 700; letter-spacing: .14em;
-    text-transform: uppercase; color: var(--accent);
-    margin-bottom: 1rem;
-  }
-  .vp-section .section-label { color: var(--accent); }
-  .vp-headline {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    line-height: 1.15; margin-bottom: 1.5rem;
-    max-width: 650px;
-  }
-  .vp-headline em { font-style: italic; color: #E8A87C; }
-  .vp-tagline {
-    font-size: 1.25rem; font-weight: 600; color: #E8A87C;
-    margin-bottom: 1rem; max-width: 680px;
-    letter-spacing: -.01em;
-  }
-  .vp-lead {
-    font-size: 1.05rem; line-height: 1.75;
-    color: rgba(247,243,238,.75); max-width: 680px; margin-bottom: 3rem;
-  }
-  .vp-cards {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem; max-width: 900px;
-  }
-  .vp-card {
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: var(--radius);
-    padding: 1.6rem;
-    transition: background .2s, transform .2s;
-  }
-  .vp-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px); }
-  .vp-icon { font-size: 2rem; margin-bottom: .8rem; }
-  .vp-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.1rem;
-    margin-bottom: .5rem; color: #fff; }
-  .vp-card p { font-size: .88rem; color: rgba(247,243,238,.65); line-height: 1.6; }
+        /* ── VALUE PROPOSITION ────────────────────────────────────────────── */
+        .vp-section {
+            padding: 6rem 5vw;
+            background: var(--deep);
+            color: var(--cream);
+            position: relative; overflow: hidden;
+        }
+        .vp-section::before {
+            content: '';
+            position: absolute; top: -80px; left: 0; right: 0;
+            height: 80px; background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 0%);
+        }
+        .vp-section::after {
+            content: '';
+            position: absolute; bottom: -80px; left: 0; right: 0;
+            height: 80px; background: var(--warm);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .section-label {
+            font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .vp-section .section-label { color: var(--accent); }
+        .vp-headline {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            line-height: 1.15; margin-bottom: 1.5rem;
+            max-width: 650px;
+        }
+        .vp-headline em { font-style: italic; color: #E8A87C; }
+        .vp-tagline {
+            font-size: 1.25rem; font-weight: 600; color: #E8A87C;
+            margin-bottom: 1rem; max-width: 680px;
+            letter-spacing: -.01em;
+        }
+        .vp-lead {
+            font-size: 1.05rem; line-height: 1.75;
+            color: rgba(247,243,238,.75); max-width: 680px; margin-bottom: 3rem;
+        }
+        .vp-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem; max-width: 900px;
+        }
+        .vp-card {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--radius);
+            padding: 1.6rem;
+            transition: background .2s, transform .2s;
+        }
+        .vp-card:hover { background: rgba(255,255,255,.1); transform: translateY(-4px); }
+        .vp-icon { font-size: 2rem; margin-bottom: .8rem; }
+        .vp-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.1rem;
+            margin-bottom: .5rem; color: #fff; }
+        .vp-card p { font-size: .88rem; color: rgba(247,243,238,.65); line-height: 1.6; }
 
-  /* ── HOW IT WORKS ─────────────────────────────────────────────────── */
-  .how-section { padding: 7rem 5vw; background: var(--warm); }
-  .how-section .section-label { color: var(--leaf); }
-  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-    align-items: center; margin-top: 3.5rem; }
-  .steps { display: flex; flex-direction: column; gap: 2rem; }
-  .step { display: flex; gap: 1.2rem; align-items: flex-start; }
-  .step-num {
-    flex-shrink: 0; width: 38px; height: 38px;
-    background: var(--accent); color: #fff;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: .9rem;
-  }
-  .step h4 { font-family: 'DM Serif Display', serif; font-size: 1.1rem;
-    margin-bottom: .35rem; }
-  .step p { font-size: .9rem; color: var(--brown); line-height: 1.6; }
+        /* ── HOW IT WORKS ─────────────────────────────────────────────────── */
+        .how-section { padding: 7rem 5vw; background: var(--warm); }
+        .how-section .section-label { color: var(--leaf); }
+        .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+            align-items: center; margin-top: 3.5rem; }
+        .steps { display: flex; flex-direction: column; gap: 2rem; }
+        .step { display: flex; gap: 1.2rem; align-items: flex-start; }
+        .step-num {
+            flex-shrink: 0; width: 38px; height: 38px;
+            background: var(--accent); color: #fff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: .9rem;
+        }
+        .step h4 { font-family: 'DM Serif Display', serif; font-size: 1.1rem;
+            margin-bottom: .35rem; }
+        .step p { font-size: .9rem; color: var(--brown); line-height: 1.6; }
 
-  /* collar diagram */
-  .collar-box {
-    background: var(--deep); border-radius: 24px;
-    padding: 2.5rem; color: var(--cream);
-    box-shadow: 0 30px 60px rgba(44,31,15,.2);
-    position: relative;
-  }
-  .collar-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem;
-    margin-bottom: 1.8rem; color: #fff; }
-  .collar-item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: .85rem 1rem;
-    border-radius: 12px; margin-bottom: .6rem;
-    background: rgba(255,255,255,.06);
-    transition: background .2s;
-  }
-  .collar-item:hover { background: rgba(255,255,255,.1); }
-  .collar-ico { font-size: 1.6rem; width: 40px; text-align: center; }
-  .collar-txt h5 { font-weight: 600; font-size: .95rem; color: #fff;
-    margin-bottom: .15rem; }
-  .collar-txt p { font-size: .78rem; color: rgba(247,243,238,.6); }
-  .privacy-chip {
-    margin-top: 1.4rem; background: rgba(74,124,89,.25);
-    border: 1px solid rgba(74,124,89,.5);
-    border-radius: 10px; padding: .8rem 1rem;
-    display: flex; align-items: center; gap: .7rem;
-  }
-  .privacy-chip span { font-size: .82rem; color: #A8D8B0; line-height: 1.5; }
+        /* collar diagram */
+        .collar-box {
+            background: var(--deep); border-radius: 24px;
+            padding: 2.5rem; color: var(--cream);
+            box-shadow: 0 30px 60px rgba(44,31,15,.2);
+            position: relative;
+        }
+        .collar-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+            margin-bottom: 1.8rem; color: #fff; }
+        .collar-item {
+            display: flex; align-items: center; gap: 1rem;
+            padding: .85rem 1rem;
+            border-radius: 12px; margin-bottom: .6rem;
+            background: rgba(255,255,255,.06);
+            transition: background .2s;
+        }
+        .collar-item:hover { background: rgba(255,255,255,.1); }
+        .collar-ico { font-size: 1.6rem; width: 40px; text-align: center; }
+        .collar-txt h5 { font-weight: 600; font-size: .95rem; color: #fff;
+            margin-bottom: .15rem; }
+        .collar-txt p { font-size: .78rem; color: rgba(247,243,238,.6); }
+        .privacy-chip {
+            margin-top: 1.4rem; background: rgba(74,124,89,.25);
+            border: 1px solid rgba(74,124,89,.5);
+            border-radius: 10px; padding: .8rem 1rem;
+            display: flex; align-items: center; gap: .7rem;
+        }
+        .privacy-chip span { font-size: .82rem; color: #A8D8B0; line-height: 1.5; }
 
-  /* ── FEATURE STRIP ────────────────────────────────────────────────── */
-  .features { padding: 6rem 5vw; background: var(--light); }
-  .features .section-label { color: var(--brown); }
-  .feat-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem; margin-top: 3rem;
-  }
-  .feat-card {
-    border: 1px solid rgba(139,111,78,.18);
-    border-radius: var(--radius); padding: 2rem;
-    transition: box-shadow .2s, transform .2s;
-    background: #fff;
-  }
-  .feat-card:hover { box-shadow: 0 16px 40px rgba(44,31,15,.1); transform: translateY(-4px); }
-  .feat-card .icon { font-size: 2.2rem; margin-bottom: 1rem; }
-  .feat-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    margin-bottom: .5rem; }
-  .feat-card p { font-size: .88rem; color: var(--brown); line-height: 1.65; }
+        /* ── FEATURE STRIP ────────────────────────────────────────────────── */
+        .features { padding: 6rem 5vw; background: var(--light); }
+        .features .section-label { color: var(--brown); }
+        .feat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem; margin-top: 3rem;
+        }
+        .feat-card {
+            border: 1px solid rgba(139,111,78,.18);
+            border-radius: var(--radius); padding: 2rem;
+            transition: box-shadow .2s, transform .2s;
+            background: #fff;
+        }
+        .feat-card:hover { box-shadow: 0 16px 40px rgba(44,31,15,.1); transform: translateY(-4px); }
+        .feat-card .icon { font-size: 2.2rem; margin-bottom: 1rem; }
+        .feat-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem;
+            margin-bottom: .5rem; }
+        .feat-card p { font-size: .88rem; color: var(--brown); line-height: 1.65; }
 
-  /* ── FOOTER / CTA ─────────────────────────────────────────────────── */
-  .footer-cta {
-    padding: 6rem 5vw; text-align: center;
-    background: var(--cream);
-  }
-  .footer-cta h2 { font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
-  .footer-cta p { color: var(--brown); max-width: 480px; margin: 0 auto 2rem;
-    font-size: 1.05rem; line-height: 1.7; }
-  footer {
-    background: var(--deep); color: rgba(247,243,238,.5);
-    text-align: center; padding: 1.5rem;
-    font-size: .82rem;
-  }
+        /* ── FOOTER / CTA ─────────────────────────────────────────────────── */
+        .footer-cta {
+            padding: 6rem 5vw; text-align: center;
+            background: var(--cream);
+        }
+        .footer-cta h2 { font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+        .footer-cta p { color: var(--brown); max-width: 480px; margin: 0 auto 2rem;
+            font-size: 1.05rem; line-height: 1.7; }
+        footer {
+            background: var(--deep); color: rgba(247,243,238,.5);
+            text-align: center; padding: 1.5rem;
+            font-size: .82rem;
+        }
 
-  /* ── RESPONSIVE ───────────────────────────────────────────────────── */
-  @media (max-width: 900px) {
-    .hero { padding: 6rem 5vw 3rem; }
-    .how-grid { grid-template-columns: 1fr; }
-    .feat-grid { grid-template-columns: 1fr 1fr; }
-    nav ul { display: none; }
-  }
-  @media (max-width: 600px) {
-    .feat-grid { grid-template-columns: 1fr; }
-    .vp-cards { grid-template-columns: 1fr; }
-  }
-</style>
+        /* ── RESPONSIVE ───────────────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .hero { padding: 6rem 5vw 3rem; }
+            .how-grid { grid-template-columns: 1fr; }
+            .feat-grid { grid-template-columns: 1fr 1fr; }
+            nav ul { display: none; }
+        }
+        @media (max-width: 600px) {
+            .feat-grid { grid-template-columns: 1fr; }
+            .vp-cards { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="logo">🐾 Paw<span>Cam</span></div>
-  <ul>
-    <li><a href="#vp">Why PawCam</a></li>
-    <li><a href="#how">How it Works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#contact" class="nav-cta">Book Now</a></li>
-  </ul>
+    <div class="logo">🐾 Paw<span>Cam</span></div>
+    <ul>
+        <li><a href="#vp">Why PawCam</a></li>
+        <li><a href="#how">How it Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#contact" class="nav-cta">Book Now</a></li>
+    </ul>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
 
-  <!-- Slideshow background -->
-  <div class="slideshow">
-    <div class="slide active" style="background-image:url('img1.png')"></div>
-    <div class="slide"        style="background-image:url('img2.png')"></div>
-    <div class="slide"        style="background-image:url('img3.png')"></div>
-    <div class="slide"        style="background-image:url('img4.png')"></div>
-    <div class="slide"        style="background-image:url('img5.png')"></div>
-    <div class="slide"        style="background-image:url('img6.png')"></div>
-  </div>
-  <div class="hero-overlay"></div>
-
-  <!-- Text content -->
-  <div class="hero-text">
-    <div class="hero-badge">
-      <span class="dot"></span> Live Camera · Bluetooth Tracking · AI Recognition
+    <!-- Slideshow background -->
+    <div class="slideshow">
+        <div class="slide active" style="background-image:url('img1.png')"></div>
+        <div class="slide"        style="background-image:url('img2.png')"></div>
+        <div class="slide"        style="background-image:url('img3.png')"></div>
+        <div class="slide"        style="background-image:url('img4.png')"></div>
+        <div class="slide"        style="background-image:url('img5.png')"></div>
+        <div class="slide"        style="background-image:url('img6.png')"></div>
     </div>
-    <h1>Your Dog.<br>Always <em>there.</em><br>Always near.</h1>
-    <p>PawCam is the first fully digital dog-sitting service with live video, location tracking and two-way audio — straight to your smartphone. Any time. Anywhere.</p>
-    <div class="cta-group">
-      <a href="#contact" class="btn-primary">Book a Free Demo</a>
-      <a href="#how" class="btn-outline">How it Works</a>
-    </div>
-  </div>
+    <div class="hero-overlay"></div>
 
-  <!-- Slide navigation dots -->
-  <div class="slide-dots">
-    <button class="slide-dot active" onclick="goToSlide(0)"></button>
-    <button class="slide-dot"        onclick="goToSlide(1)"></button>
-    <button class="slide-dot"        onclick="goToSlide(2)"></button>
-    <button class="slide-dot"        onclick="goToSlide(3)"></button
-    <button class="slide-dot"        onclick="goToSlide(4)"></button>
-    <button class="slide-dot"        onclick="goToSlide(5)"></button>
-  </div>
+    <!-- Text content -->
+    <div class="hero-text">
+        <div class="hero-badge">
+            <span class="dot"></span> Live Camera · Bluetooth Tracking · AI Recognition
+        </div>
+        <h1>Your Dog.<br>Always <em>there.</em><br>Always near.</h1>
+        <p>PawCam is the first fully digital dog-sitting service with live video, location tracking and two-way audio — straight to your smartphone. Any time. Anywhere.</p>
+        <div class="cta-group">
+            <a href="#contact" class="btn-primary">Book a Free Demo</a>
+            <a href="#how" class="btn-outline">How it Works</a>
+        </div>
+    </div>
+
+    <!-- Slide navigation dots (generated by JS below) -->
+    <div class="slide-dots" id="dots"></div>
 
 </section>
 
 <!-- VALUE PROPOSITION -->
 <section class="vp-section" id="vp">
-  <div class="section-label">Value Proposition</div>
-  <div class="vp-tagline">"You're away – but always present."</div>
-  <h2 class="vp-headline">The first dog-sitting service that <em>invites</em> you to watch.</h2>
-  <p class="vp-lead">
-    Every dog owner knows the uneasy feeling: Where is my dog right now? Is he playing? Is he stressed? With PawCam, that feeling belongs to the past. You see your dog live — captured by wall cameras in the Dog-Sitter House and the smart collar cameras worn by the other dogs. An AI automatically selects the best camera angle. You can even speak to your dog whenever the moment feels right.
-  </p>
-  <div class="vp-cards">
-    <div class="vp-card">
-      <div class="vp-icon">📹</div>
-      <h3>See everything. Any time.</h3>
-      <p>Multiple HD cameras on the walls and on other dogs' collars capture your companion from every angle — live on your smartphone.</p>
+    <div class="section-label">Value Proposition</div>
+    <div class="vp-tagline">"You're away – but always present."</div>
+    <h2 class="vp-headline">The first dog-sitting service that <em>invites</em> you to watch.</h2>
+    <p class="vp-lead">
+        Every dog owner knows the uneasy feeling: Where is my dog right now? Is he playing? Is he stressed? With PawCam, that feeling belongs to the past. You see your dog live — captured by wall cameras in the Dog-Sitter House and the smart collar cameras worn by the other dogs. An AI automatically selects the best camera angle. You can even speak to your dog whenever the moment feels right.
+    </p>
+    <div class="vp-cards">
+        <div class="vp-card">
+            <div class="vp-icon">📹</div>
+            <h3>See everything. Any time.</h3>
+            <p>Multiple HD cameras on the walls and on other dogs' collars capture your companion from every angle — live on your smartphone.</p>
+        </div>
+        <div class="vp-card">
+            <div class="vp-icon">🔊</div>
+            <h3>Talk when it fits.</h3>
+            <p>A small speaker in the collar lets your voice reach your dog directly — gently, precisely and only when the moment is right.</p>
+        </div>
+        <div class="vp-card">
+            <div class="vp-icon">📍</div>
+            <h3>Always know where they are.</h3>
+            <p>Bluetooth positioning shows you the exact location of your dog inside the Dog-Sitter House — in real time, with no delay.</p>
+        </div>
+        <div class="vp-card">
+            <div class="vp-icon">🤖</div>
+            <h3>AI finds your dog.</h3>
+            <p>Our AI recognises every dog individually and automatically selects the best available camera feed — you never have to search, just watch.</p>
+        </div>
     </div>
-    <div class="vp-card">
-      <div class="vp-icon">🔊</div>
-      <h3>Talk when it fits.</h3>
-      <p>A small speaker in the collar lets your voice reach your dog directly — gently, precisely and only when the moment is right.</p>
-    </div>
-    <div class="vp-card">
-      <div class="vp-icon">📍</div>
-      <h3>Always know where they are.</h3>
-      <p>Bluetooth positioning shows you the exact location of your dog inside the Dog-Sitter House — in real time, with no delay.</p>
-    </div>
-    <div class="vp-card">
-      <div class="vp-icon">🤖</div>
-      <h3>AI finds your dog.</h3>
-      <p>Our AI recognises every dog individually and automatically selects the best available camera feed — you never have to search, just watch.</p>
-    </div>
-  </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how-section" id="how">
-  <div class="section-label">How it Works</div>
-  <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:.5rem;">Technology that feels like magic.</h2>
-  <p style="color:var(--brown);font-size:1rem;margin-bottom:0;">Behind it: pure precision.</p>
+    <div class="section-label">How it Works</div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:.5rem;">Technology that feels like magic.</h2>
+    <p style="color:var(--brown);font-size:1rem;margin-bottom:0;">Behind it: pure precision.</p>
 
-  <div class="how-grid">
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div>
-          <h4>Smart collars for every dog</h4>
-          <p>Every dog in our care wears a lightweight smart collar with a mini camera, Bluetooth chip and speaker. The camera faces forward — filming what the dog sees, which means the other dogs around them.</p>
+    <div class="how-grid">
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div>
+                    <h4>Smart collars for every dog</h4>
+                    <p>Every dog in our care wears a lightweight smart collar with a mini camera, Bluetooth chip and speaker. The camera faces forward — filming what the dog sees, which means the other dogs around them.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div>
+                    <h4>Wall cameras in the Dog-Sitter House</h4>
+                    <p>Fixed HD cameras on every wall cover every corner of the house and garden. Together with the collar cameras, they create a seamless, gap-free picture.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div>
+                    <h4>AI-powered dog recognition</h4>
+                    <p>Our AI identifies each dog in real time and automatically selects the best available camera feed for your dog — contextually and with precision.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div>
+                    <h4>Privacy by Design</h4>
+                    <p>All people in the frame are automatically pixelated and anonymised in real time. No member of staff is ever identifiable. Privacy first.</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div>
-          <h4>Wall cameras in the Dog-Sitter House</h4>
-          <p>Fixed HD cameras on every wall cover every corner of the house and garden. Together with the collar cameras, they create a seamless, gap-free picture.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div>
-          <h4>AI-powered dog recognition</h4>
-          <p>Our AI identifies each dog in real time and automatically selects the best available camera feed for your dog — contextually and with precision.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div>
-          <h4>Privacy by Design</h4>
-          <p>All people in the frame are automatically pixelated and anonymised in real time. No member of staff is ever identifiable. Privacy first.</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="collar-box">
-      <div class="collar-title">🐾 The PawCam Collar</div>
-      <div class="collar-item">
-        <div class="collar-ico">📹</div>
-        <div class="collar-txt">
-          <h5>Mini HD Camera</h5>
-          <p>Front-facing perspective – films the other dogs at play</p>
+        <div class="collar-box">
+            <div class="collar-title">🐾 The PawCam Collar</div>
+            <div class="collar-item">
+                <div class="collar-ico">📹</div>
+                <div class="collar-txt">
+                    <h5>Mini HD Camera</h5>
+                    <p>Front-facing perspective – films the other dogs at play</p>
+                </div>
+            </div>
+            <div class="collar-item">
+                <div class="collar-ico">📡</div>
+                <div class="collar-txt">
+                    <h5>Bluetooth Chip</h5>
+                    <p>Precise real-time positioning inside the house &amp; garden</p>
+                </div>
+            </div>
+            <div class="collar-item">
+                <div class="collar-ico">🔊</div>
+                <div class="collar-txt">
+                    <h5>Micro Speaker</h5>
+                    <p>Delivers the owner's voice directly to the dog's ear</p>
+                </div>
+            </div>
+            <div class="collar-item">
+                <div class="collar-ico">🔋</div>
+                <div class="collar-txt">
+                    <h5>All-day Battery</h5>
+                    <p>Lasts comfortably through a full day of care</p>
+                </div>
+            </div>
+            <div class="privacy-chip">
+                <span>🔒</span>
+                <span><strong style="color:#fff">Privacy:</strong> All people in the frame are automatically anonymised by AI in real time. GDPR-compliant.</span>
+            </div>
         </div>
-      </div>
-      <div class="collar-item">
-        <div class="collar-ico">📡</div>
-        <div class="collar-txt">
-          <h5>Bluetooth Chip</h5>
-          <p>Precise real-time positioning inside the house &amp; garden</p>
-        </div>
-      </div>
-      <div class="collar-item">
-        <div class="collar-ico">🔊</div>
-        <div class="collar-txt">
-          <h5>Micro Speaker</h5>
-          <p>Delivers the owner's voice directly to the dog's ear</p>
-        </div>
-      </div>
-      <div class="collar-item">
-        <div class="collar-ico">🔋</div>
-        <div class="collar-txt">
-          <h5>All-day Battery</h5>
-          <p>Lasts comfortably through a full day of care</p>
-        </div>
-      </div>
-      <div class="privacy-chip">
-        <span>🔒</span>
-        <span><strong style="color:#fff">Privacy:</strong> All people in the frame are automatically anonymised by AI in real time. GDPR-compliant.</span>
-      </div>
     </div>
-  </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features" id="features">
-  <div class="section-label">Everything included</div>
-  <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);">More than dog-sitting.</h2>
-  <div class="feat-grid">
-    <div class="feat-card">
-      <div class="icon">📱</div>
-      <h3>Live-Stream App</h3>
-      <p>Your personal channel for your dog. Live video, location and voice — all in one intuitive app.</p>
+    <div class="section-label">Everything included</div>
+    <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);">More than dog-sitting.</h2>
+    <div class="feat-grid">
+        <div class="feat-card">
+            <div class="icon">📱</div>
+            <h3>Live-Stream App</h3>
+            <p>Your personal channel for your dog. Live video, location and voice — all in one intuitive app.</p>
+        </div>
+        <div class="feat-card">
+            <div class="icon">🐕‍🦺</div>
+            <h3>Professional Care</h3>
+            <p>Vetted, certified dog sitters. Small groups, individual attention. Your dog is in the best hands.</p>
+        </div>
+        <div class="feat-card">
+            <div class="icon">🗓️</div>
+            <h3>Flexible Booking</h3>
+            <p>Day, week or monthly care. Book online in seconds — no phone calls, no waiting lists.</p>
+        </div>
+        <div class="feat-card">
+            <div class="icon">🤝</div>
+            <h3>Social Play</h3>
+            <p>Multiple dogs together encourage natural social behaviour. Your dog makes friends — you watch it happen.</p>
+        </div>
+        <div class="feat-card">
+            <div class="icon">🛡️</div>
+            <h3>Fully Insured</h3>
+            <p>Every dog in our care is comprehensively insured during their stay. Safety at every level.</p>
+        </div>
+        <div class="feat-card">
+            <div class="icon">📊</div>
+            <h3>Activity Report</h3>
+            <p>After every session you receive an automatic report: activity levels, playtime, location history and highlights.</p>
+        </div>
     </div>
-    <div class="feat-card">
-      <div class="icon">🐕‍🦺</div>
-      <h3>Professional Care</h3>
-      <p>Vetted, certified dog sitters. Small groups, individual attention. Your dog is in the best hands.</p>
-    </div>
-    <div class="feat-card">
-      <div class="icon">🗓️</div>
-      <h3>Flexible Booking</h3>
-      <p>Day, week or monthly care. Book online in seconds — no phone calls, no waiting lists.</p>
-    </div>
-    <div class="feat-card">
-      <div class="icon">🤝</div>
-      <h3>Social Play</h3>
-      <p>Multiple dogs together encourage natural social behaviour. Your dog makes friends — you watch it happen.</p>
-    </div>
-    <div class="feat-card">
-      <div class="icon">🛡️</div>
-      <h3>Fully Insured</h3>
-      <p>Every dog in our care is comprehensively insured during their stay. Safety at every level.</p>
-    </div>
-    <div class="feat-card">
-      <div class="icon">📊</div>
-      <h3>Activity Report</h3>
-      <p>After every session you receive an automatic report: activity levels, playtime, location history and highlights.</p>
-    </div>
-  </div>
 </section>
 
 <!-- FOOTER CTA -->
 <section class="footer-cta" id="contact">
-  <h2>Ready to always be there?</h2>
-  <p>Book a free demo session and see for yourself how good distance can feel — when you can always see exactly what your dog is up to.</p>
-  <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;">Book Free Demo →</a>
+    <h2>Ready to always be there?</h2>
+    <p>Book a free demo session and see for yourself how good distance can feel — when you can always see exactly what your dog is up to.</p>
+    <a href="#" class="btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem;">Book Free Demo →</a>
 </section>
 
 <footer>
-  © 2025 PawCam Ltd · Zurich · Privacy Policy · Imprint
+    © 2025 PawCam Ltd · Zurich · Privacy Policy · Imprint
 </footer>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const dots   = document.querySelectorAll('.slide-dot');
-  let current  = 0;
-  let timer;
+    const slides  = document.querySelectorAll('.slide');
+    const dotsBox = document.getElementById('dots');
+    let current = 0;
 
-  function goToSlide(n) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = n;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    // reset auto-advance when user clicks
-    clearInterval(timer);
-    timer = setInterval(nextSlide, 5000);
-  }
+    // Build dots dynamically — always matches slide count exactly
+    slides.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'slide-dot' + (i === 0 ? ' active' : '');
+        btn.addEventListener('click', () => goToSlide(i));
+        dotsBox.appendChild(btn);
+    });
 
-  function nextSlide() {
-      goToSlide((current + 1) % slides.length);
-  }
+    function goToSlide(n) {
+        const total = slides.length;
+        n = ((n % total) + total) % total;  // safe loop: 0 … total-1
+        slides[current].classList.remove('active');
+        dotsBox.children[current].classList.remove('active');
+        current = n;
+        slides[current].classList.add('active');
+        dotsBox.children[current].classList.add('active');
+    }
 
-  // auto-advance every 5 seconds
-  timer = setInterval(nextSlide, 5000);
-  <script>
-      const slides = document.querySelectorAll('.slide');
-      const dots   = document.querySelectorAll('.slide-dot');
-      let current  = 0;
-      let timer;
-
-      function goToSlide(n) {
-      // Sicherheitsnetz: Index immer in gültigem Bereich halten
-      n = ((n % slides.length) + slides.length) % slides.length;
-
-      slides[current].classList.remove('active');
-      if (dots[current]) dots[current].classList.remove('active');
-
-      current = n;
-
-      slides[current].classList.add('active');
-      if (dots[current]) dots[current].classList.add('active');
-  }
-
-      function nextSlide() {
-      goToSlide(current + 1);
-  }
-
-      timer = setInterval(nextSlide, 5000);
+    // Auto-advance every 5 seconds, loops forever
+    setInterval(() => goToSlide(current + 1), 5000);
 </script>
 </body>
 </html>
