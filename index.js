@@ -1,15 +1,19 @@
 import DocPouchClient from "docpouch-client";
+const TOOLPATH = "/toolchain.html"
+const client = new DocPouchClient('https://docpouch.pantek.app', 80);
 
 async function toolchainAccess(user, password) {
-    const client = new DocPouchClient('https://your-docpouch-server.com', 80);
     const loginResponse = await client.login({
         name: user,
         password: password
     });
 
     if (loginResponse) {
-        client.setToken('your-auth-token');
-    } else {
+        client.setToken(loginResponse.token);
+        localStorage.setItem('authToken', loginResponse.token);
+        window.location.replace(TOOLPATH)
+    }
+    else {
         throw new Error('Login failed');
     }
 }
@@ -41,11 +45,12 @@ form.onsubmit = async function(e) {
     const password = document.getElementById('password').value;
 
     try {
-        await toolchainAccess(username, password);
-        modal.style.display = 'none';
-        errorDiv.classList.remove('show');
-        errorDiv.textContent = '';
-        form.reset();
+        (await toolchainAccess(username, password)).then(() => {
+            modal.style.display = 'none';
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+            form.reset();
+        })
     } catch (error) {
         errorDiv.textContent = 'Login failed: ' + error.message;
         errorDiv.classList.add('show');
@@ -53,5 +58,18 @@ form.onsubmit = async function(e) {
 }
 
 window.showLoginDialog = function() {
-    modal.style.display = 'block';
+    let token = localStorage.getItem("authToken");
+    if (token){
+        client.setToken(token);
+        client.listUsers().then(users => {
+            if (users.length === 0){
+                localStorage.removeItem("authToken");
+                modal.style.display = 'block';
+            }
+            else
+                window.location.replace(TOOLPATH)
+        })
+    }
+    else
+        modal.style.display = 'block';
 };
