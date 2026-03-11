@@ -54,6 +54,25 @@
             transition: background .2s, transform .2s !important;
         }
         .nav-cta:hover { background: var(--deep) !important; transform: scale(1.04); }
+        .logo-wrapper {
+            display: flex; flex-direction: column; gap: .5rem;
+        }
+        .toolchain-btn {
+            font-size: .75rem; color: var(--brown);
+            text-decoration: none;
+            padding: .3rem .9rem;
+            border: 1px solid rgba(139,111,78,.25);
+            border-radius: 20px;
+            background: rgba(247,243,238,.5);
+            transition: all .2s;
+            font-weight: 500;
+            align-self: flex-start;
+        }
+        .toolchain-btn:hover {
+            background: var(--brown);
+            color: #fff;
+            border-color: var(--brown);
+        }
 
         /* ── HERO ─────────────────────────────────────────────────────────── */
         .hero {
@@ -310,13 +329,100 @@
             .feat-grid { grid-template-columns: 1fr; }
             .vp-cards { grid-template-columns: 1fr; }
         }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+        .login-modal-content {
+            background-color: var(--light);
+            margin: 15% auto;
+            padding: 2.5rem;
+            border: 1px solid rgba(139,111,78,0.2);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .login-close {
+            color: var(--brown);
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .login-close:hover { color: var(--accent); }
+        .login-modal-content h2 {
+            font-family: 'DM Serif Display', serif;
+            color: var(--deep);
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--brown);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem;
+            border: 2px solid rgba(139,111,78,0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .login-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-submit:hover { background: #b05322; }
+        .login-error {
+            color: #d32f2f;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(211,47,47,0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .login-error.show { display: block; }
     </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-    <div class="logo">🐾 Paw<span>Cam</span></div>
+    <div class="logo-wrapper">
+        <div class="logo">🐾 Paw<span>Cam</span></div>
+        <a href="#" class="toolchain-btn" onclick="showLoginDialog()">Toolchain Access</a>
+    </div>
     <ul>
         <li><a href="#vp">Why PawCam</a></li>
         <li><a href="#how">How it Works</a></li>
@@ -514,6 +620,27 @@
     © 2025 PawCam Ltd · Zurich · Privacy Policy · Imprint
 </footer>
 
+<!-- Login Dialog Modal -->
+<div id="loginModal" class="login-modal">
+    <div class="login-modal-content">
+        <span class="login-close">&times;</span>
+        <h2>Toolchain Access</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-submit">Login</button>
+        </form>
+        <div id="loginError" class="login-error"></div>
+    </div>
+</div>
+
+
 <script>
     const slides  = document.querySelectorAll('.slide');
     const dotsBox = document.getElementById('dots');
@@ -529,7 +656,7 @@
 
     function goToSlide(n) {
         const total = slides.length;
-        n = ((n % total) + total) % total;  // safe loop: 0 … total-1
+        n = ((n % total) + total) % total;
         slides[current].classList.remove('active');
         dotsBox.children[current].classList.remove('active');
         current = n;
@@ -537,8 +664,8 @@
         dotsBox.children[current].classList.add('active');
     }
 
-    // Auto-advance every 5 seconds, loops forever
     setInterval(() => goToSlide(current + 1), 5000);
 </script>
+<script type="module" src="index.js"></script>
 </body>
 </html>
