@@ -1,5 +1,5 @@
 import DocPouchClient from "docpouch-client";
-const TOOLPATH = "/toolchain.html"
+const TOOLPATH = "toolchain.html"
 const client = new DocPouchClient('https://docpouch.pantek.app', 80);
 
 async function toolchainAccess(user, password) {

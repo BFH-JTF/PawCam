@@ -1,7 +1,7 @@
 import DocPouchClient from "docpouch-client";
 
 const client = new DocPouchClient('https://docpouch.pantek.app', 80);
-const ROOTPATH = "/"
+const ROOTPATH = "index.html"
 const token = localStorage.getItem("authToken")
 if (!token)
     window.location.replace(ROOTPATH)
