@@ -2,7 +2,7 @@
   "name": "paw_cam",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,6 +13,6 @@
     "docpouch-client": "^0.8.14"
   },
   "devDependencies": {
-    "vite": "^7.3.1"
+    "vite": "^8.0.0"
   }
 }
