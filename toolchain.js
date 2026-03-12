@@ -10,3 +10,14 @@ const users = await client.listUsers();
 if (users.length === 0)
     window.location.replace(ROOTPATH)
 document.body.style.display = ''; // show page
+
+const logoutBtn = document.createElement('button');
+logoutBtn.className = 'logout-btn';
+logoutBtn.textContent = 'Logout';
+logoutBtn.addEventListener('click', logout);
+document.querySelector('main').prepend(logoutBtn);
+
+function logout() {
+    localStorage.removeItem("authToken");
+    window.location.href = "index.html";
+}
